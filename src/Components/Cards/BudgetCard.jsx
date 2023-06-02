@@ -1,14 +1,9 @@
-import { useContext } from "react";
-import UserContext from "../../Context/UserContext";
 import BudgetBox from "../BudgetBox";
-
-
-
+import { useSelector } from "react-redux";
+import { selectBudgetValues } from "../../Redux/slice/BudgetSlice";
 
 const BudgetCard = () => {
-	const { budgetValues } = useContext(UserContext);
-
-
+	const budgetValues = useSelector(selectBudgetValues);
 
 	return (
 		<>

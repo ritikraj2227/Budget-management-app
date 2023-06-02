@@ -1,14 +1,16 @@
-import { useContext } from "react";
-import UserContext from "../Context/UserContext";
 import CreateBudgetCard from "../Components/Cards/CreateBudgetCard";
 import ExpenseCard from "../Components/Cards/ExpenseCard";
 import BudgetCard from "../Components/Cards/BudgetCard";
 import ExpenseTable from "../Components/ExpenseTable";
+import { useSelector } from "react-redux";
+import { selectUser } from "../Redux/slice/loginSlice";
+import { selectBudgetValues } from "../Redux/slice/BudgetSlice";
 
 const Dashboard = () => {
-	const { user, budgetValues } = useContext(UserContext);
+	const user = useSelector(selectUser);
 	const User = user.charAt(0).toUpperCase() + user.slice(1);
 
+	const budgetValues = useSelector(selectBudgetValues);
 
 	return (
 		<div className="container">

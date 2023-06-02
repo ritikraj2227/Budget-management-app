@@ -1,10 +1,11 @@
-import { useContext, useState } from "react";
-import UserContext from "../Context/UserContext";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteBudget, selectExpenceData } from "../Redux/slice/BudgetSlice";
 
 const BudgetBox = ({ index, budget }) => {
 	const [totalSpent, setTotalSpent] = useState(0);
-
-	const { handleDelete, expenseData } = useContext(UserContext);
+	const expenseData = useSelector(selectExpenceData);
+	const dispatch = useDispatch();
 
 	const filteredExpenses = expenseData.filter((expense) => expense.budgetName === budget.budgetName);
 
@@ -15,6 +16,10 @@ const BudgetBox = ({ index, budget }) => {
 	if (totalSpent !== totalSpentAmount) {
 		setTotalSpent(totalSpentAmount);
 	}
+
+	const handleDelete = (index, name) => {
+		dispatch(deleteBudget({ index, name }));
+	};
 
 	return (
 		<>

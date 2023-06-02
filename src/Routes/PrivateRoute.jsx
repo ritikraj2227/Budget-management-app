@@ -1,11 +1,11 @@
-import { useContext } from "react";
+import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
-import UserContext from "../Context/UserContext";
+import { selectIsLogin } from "../Redux/slice/loginSlice";
 
 const PrivateRoute = () => {
-	const { user } = useContext(UserContext);
+	const LoggedIn = useSelector(selectIsLogin);
 
-	return user ? <Outlet /> : <Navigate to="/" />;
+	return LoggedIn ? <Outlet /> : <Navigate to="/" />;
 };
 
 export default PrivateRoute;

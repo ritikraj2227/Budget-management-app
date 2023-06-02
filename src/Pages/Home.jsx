@@ -1,12 +1,13 @@
-import { useContext, useState } from "react";
+import {  useState } from "react";
 import img from "../assets/images/img.png";
-import UserContext from "../Context/UserContext";
 import { useNavigate } from "react-router-dom";
+import { login } from "../Redux/slice/loginSlice";
+import { useDispatch } from "react-redux";
 
 const Home = () => {
-	const { login } = useContext(UserContext);
 	const [user, setUser] = useState("");
 	const navigate = useNavigate()
+	const dispatch = useDispatch()
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -14,7 +15,7 @@ const Home = () => {
 			alert("Please Provide Your Name!");
 			return;
 		}
-		login(user);
+		dispatch(login(user));
 		setUser("");
 		navigate("/dashboard");
 	};

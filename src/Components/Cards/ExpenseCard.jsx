@@ -1,12 +1,14 @@
-import { useContext, useState } from "react";
-import UserContext from "../../Context/UserContext";
+import { useState } from "react";
+import { addExpence, selectBudgetCategory } from "../../Redux/slice/BudgetSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const ExpenseCard = () => {
-	const { budgetCategory, handleExpenseSubmit } = useContext(UserContext);
+	const budgetCategory = useSelector(selectBudgetCategory);
+	const dispatch = useDispatch();
 
 	const [expenseName, setExpenseName] = useState("");
 	const [expenseAmount, setExpenseAmount] = useState("");
-	const [budgetName, setBudgetName] = useState(budgetCategory[0]?.name);
+	const [budgetName, setBudgetName] = useState(budgetCategory[0]?.budgetName);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -18,13 +20,20 @@ const ExpenseCard = () => {
 			alert("Enter Expense Amount");
 			return;
 		}
-		handleExpenseSubmit(expenseName, expenseAmount, budgetName);
+		dispatch(addExpence({ expenseName, expenseAmount, budgetName }));
 		setExpenseName("");
 		setExpenseAmount("");
 	};
 	return (
 		<div className="form">
-			<h3>Add New Expense</h3>
+			{budgetCategory.length === 1 ? (
+				<h3>
+					Add New <span style={{ color: "red" }}>{budgetCategory[0].budgetName}</span> Expense
+				</h3>
+			) : (
+				<h3>Add New Expense</h3>
+			)}
+
 			<form onSubmit={handleSubmit}>
 				<div className="flex">
 					<div>
@@ -54,21 +63,25 @@ const ExpenseCard = () => {
 					</div>
 				</div>
 				<div>
-					<label htmlFor="newExpenseBudget">Budget Category</label>
-					<select
-						name="newExpenseBudget"
-						id="newExpenseBudget"
-						required=""
-						value={budgetName}
-						onChange={(e) => setBudgetName(e.target.value)}>
-						{budgetCategory.map((value, index) => (
-							<option
-								key={index}
-								value={value.name}>
-								{value.name}
-							</option>
-						))}
-					</select>
+					{budgetCategory.length === 1 ? null : (
+						<>
+							<label htmlFor="newExpenseBudget">Budget Category</label>
+							<select
+								name="newExpenseBudget"
+								id="newExpenseBudget"
+								required=""
+								value={budgetName}
+								onChange={(e) => setBudgetName(e.target.value)}>
+								{budgetCategory?.map((value, index) => (
+									<option
+										key={index}
+										value={value.budgetName}>
+										{value.budgetName}
+									</option>
+								))}
+							</select>
+						</>
+					)}
 				</div>
 				<button type="submit">Add Expense</button>
 			</form>

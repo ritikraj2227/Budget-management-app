@@ -1,13 +1,13 @@
-import { useContext, useState } from "react";
-import UserContext from "../../Context/UserContext";
+import {  useState } from "react";
+import { useDispatch } from "react-redux";
+import {addBudget, addCategory } from "../../Redux/slice/BudgetSlice"
 
 const CreateBudgetCard = () => {
-	const { handleBudgetSubmit, handleCategorySubmit } = useContext(UserContext);
-
 	const [budgetName, setBudgetName] = useState("");
 	const [budgetAmount, setBudgetAmount] = useState("");
+	const dispatch = useDispatch();
 
-	const handleSubmit = (e)=>{
+	const handleSubmit = (e) => {
 		e.preventDefault();
 
 		if (!budgetName) {
@@ -18,14 +18,12 @@ const CreateBudgetCard = () => {
 			alert("Provide Budget Amount");
 			return;
 		}
-
-		handleBudgetSubmit(budgetName, budgetAmount);
-		handleCategorySubmit(budgetName);
+		dispatch(addBudget({ budgetName, budgetAmount }));
+		dispatch(addCategory({budgetName}));
 		setBudgetName("");
 		setBudgetAmount("");
-
-	}
-  return (
+	};
+	return (
 		<div className="form">
 			<h3>Create Budget</h3>
 			<form onSubmit={handleSubmit}>
@@ -58,7 +56,7 @@ const CreateBudgetCard = () => {
 				<button type="submit">Create Budget</button>
 			</form>
 		</div>
-  );
+	);
 }
 
 export default CreateBudgetCard
